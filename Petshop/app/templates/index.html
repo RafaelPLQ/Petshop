@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+    {% if user.is_staff %}
+
+    <div class="container mt-5">
+
+        <div class="jumbotron page-jumbotron text-center">
+            <h1 class="display-5 mb-3">Painel Administrativo 🛠️</h1>
+            <p class="lead">
+                Área destinada à gestão dos agendamentos e dos dados do sistema.
+            </p>
+        </div>
+        </div>
+    </div>
+
+    {% else %}
+
+    <div class="container mt-5">
+
+        <div class="jumbotron page-jumbotron text-center">
+            <h1 class="display-5 mb-3">Bem-vindo(a), {{ user.username }} 🐾</h1>
+            <p class="lead">
+                Este sistema foi para ajudar a você gerenciar seus agendamentos em nosso Petshop.
+            </p>
+        </div>
+        </div>
+    </div>
+    
+        <!-- Lista de agendamentos do cliente (centralizada) -->
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h3 class="mb-3 text-center">Seus Agendamentos</h3>
+                    {% if agendamentos and agendamentos.count > 0 %}
+                        {% for ag in agendamentos %}
+                            <div class="card agendamento-card mb-3">
+                                <div class="card-body">
+                                    <div class="text-center">
+                                        <h5 class="card-title mb-1">{{ ag.pet.nome }} — {{ ag.servico.nome }}</h5>
+                                        <p class="mb-1"><span class="agendamento-meta">{{ ag.data_agendamento }}</span><span class="agendamento-meta">{{ ag.hora }}</span></p>
+                                        <p class="mb-1"><strong>Funcionário:</strong> {{ ag.funcionario.nome }}</p>
+                                        {% if ag.descricao %}<p class="mb-0"><strong>Observação:</strong> {{ ag.descricao }}</p>{% endif %}
+
+                                        <div class="mt-3 agendamento-actions">
+                                            <a href="{% url 'editar_agendamento' ag.id_agendamento %}" class="btn btn-primary btn-sm">Editar</a>
+
+                                            <form action="{% url 'deletar_agendamento' ag.id_agendamento %}" method="post" style="display:inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Deseja excluir este agendamento?');">Excluir</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-4">Você não possui agendamentos.</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+{% else %}
+
+<div class="container mt-5">
+    <div class="card border-dark shadow-sm">
+        <div class="card-body text-center p-5">
+            <h1 class="display-5 mb-3">Venha para quem cuida melhor do seu Pet 🐶🐱</h1>
+            <p class="lead">
+                Para acessar o sistema é necessário possuir uma conta.
+            </p>
+
+            <div class="mt-4">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-2">
+                    Fazer Login
+                </a>
+                <a href="{% url 'register' %}" class="btn btn-outline-danger btn-lg">
+                    Criar Conta
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

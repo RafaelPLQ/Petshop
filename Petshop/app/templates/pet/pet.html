@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Meus Pets</h3>
+        <a href="{% url 'cadastrar_pet' %}" class="btn btn-primary">Cadastrar Pet</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Raça</th>
+                    <th>Espécie</th>
+                    <th>Idade</th>
+                    <th>Cliente</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pet in pets %}
+                <tr>
+                    <td>{{ pet.nome }}</td>
+                    <td>{{ pet.raca.nome }}</td>
+                    <td>{{ pet.especie.nome }}</td>
+                    <td>{{ pet.idade }}</td>
+                    <td>{{ pet.cliente.nome }}</td>
+                    <td>
+                        <a href="{% url 'editar_pet' pet.id_pet %}" class="btn btn-sm btn-primary">Editar</a>
+                        <form action="{% url 'deletar_pet' pet.id_pet %}" method="post" style="display:inline-block;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">Nenhum pet cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

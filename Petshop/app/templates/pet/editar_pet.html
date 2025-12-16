@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3>Editar Pet</h3>
+    <div class="card p-4 mt-3">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">{{ form.nome.label_tag }}{{ form.nome }}</div>
+                <div class="col-md-6 mb-3">{{ form.idade.label_tag }}{{ form.idade }}</div>
+                <div class="col-md-6 mb-3">{{ form.raca.label_tag }}{{ form.raca }}</div>
+                <div class="col-md-6 mb-3">{{ form.especie.label_tag }}{{ form.especie }}</div>
+                <div class="col-12 mb-3">{{ form.cliente.label_tag }}{{ form.cliente }}</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Atualizar</button>
+            <a href="{% url 'pet' %}" class="btn btn-secondary">Voltar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

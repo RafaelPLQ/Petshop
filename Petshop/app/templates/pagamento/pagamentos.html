@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Pagamentos</h2>
+
+  {% if pagamentos and pagamentos|length > 0 %}
+    <table class="table table-striped mt-3">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Agendamento</th>
+          <th>Pet</th>
+          <th>Serviço</th>
+          <th>Valor</th>
+          <th>Forma</th>
+          <th>Data Pagamento</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in pagamentos %}
+        <tr>
+          <td>{{ p.id_pagamento }}</td>
+          <td>{{ p.agendamento.data_agendamento }} {{ p.agendamento.hora }}</td>
+          <td>{{ p.agendamento.pet.nome }}</td>
+          <td>{{ p.agendamento.servico.nome }}</td>
+          <td>R$ {{ p.valor }}</td>
+          <td>{{ p.forma_pagamento }}</td>
+          <td>{{ p.data_pagamento }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="alert alert-info mt-3">Nenhum pagamento encontrado.</div>
+  {% endif %}
+
+</div>
+
+{% endblock %}

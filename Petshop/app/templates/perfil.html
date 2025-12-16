@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Meu Perfil{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg rounded-4 p-4">
+                <h2 class="mb-4 text-center">Meu Perfil</h2>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="text-primary">Informações Pessoais</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Nome de Usuário:</strong> {{ user.username }}</li>
+                            <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+                            <li class="list-group-item"><strong>Primeiro Nome:</strong> {{ user.first_name }}</li>
+                            <li class="list-group-item"><strong>Sobrenome:</strong> {{ user.last_name }}</li>
+                            <li class="list-group-item"><strong>Data de Cadastro:</strong> {{ user.date_joined|date:"d/m/Y" }}</li>
+                            <li class="list-group-item"><strong>Último Login:</strong> {{ user.last_login|date:"d/m/Y H:i" }}</li>
+                            <li class="list-group-item"><strong>Ativo:</strong> {% if user.is_active %}Sim{% else %}Não{% endif %}</li>
+                            <li class="list-group-item"><strong>Staff:</strong> {% if user.is_staff %}Sim{% else %}Não{% endif %}</li>
+                            <li class="list-group-item"><strong>Superusuário:</strong> {% if user.is_superuser %}Sim{% else %}Não{% endif %}</li>
+                        </ul>
+                    </div>
+                <div class="mt-4 text-center">
+                    <a href="{% url 'index' %}" class="btn btn-secondary">Voltar ao Início</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<style>
+/* Fundo geral da página */
+body {
+    background-color: #f4f9f7;
+}
+
+/* Card principal */
+.card {
+    border: none;
+    background-color: #ffffff;
+}
+
+/* Título principal */
+.card h2 {
+    color: #2f6f5e;
+    font-weight: 700;
+}
+
+/* Subtítulos */
+h5.text-primary {
+    color: #3a8f76 !important;
+    font-weight: 600;
+}
+
+/* Lista de informações */
+.list-group-item {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #e3f2ed;
+    padding-left: 0;
+    padding-right: 0;
+    color: #374151;
+}
+
+/* Último item sem linha */
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+/* Destaque para os labels */
+.list-group-item strong {
+    color: #2f6f5e;
+}
+
+/* Botão voltar */
+.btn-secondary {
+    background-color: #6fbf9b;
+    border: none;
+    padding: 8px 22px;
+    border-radius: 999px;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background-color: #5aa889;
+}
+
+/* Espaçamento mais elegante no mobile */
+@media (max-width: 768px) {
+    .card {
+        padding: 1.5rem !important;
+    }
+}
+</style>

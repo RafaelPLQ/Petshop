@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Pagamento</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  {% if agendamentos and agendamentos|length > 0 %}
+  <form method="post" class="mt-3" id="pagamento-form">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Agendamento</label>
+      <select name="agendamento_id" id="agendamento-select" class="form-select" required>
+        <option value="">-- selecione --</option>
+        {% for ag in agendamentos %}
+          <option value="{{ ag.id_agendamento }}" data-valor="{{ ag.servico.valor }}">{{ ag.pet.nome }} — {{ ag.servico.nome }} — {{ ag.data_agendamento }} {{ ag.hora }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Valor</label>
+      <input type="text" id="valor-display" class="form-control" value="R$ 0.00" readonly>
+      <input type="hidden" name="valor" id="valor-hidden" value="0">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Forma de pagamento</label>
+      <select name="metodo" class="form-select" required>
+        <option value="Dinheiro">Dinheiro</option>
+        <option value="Cartão">Cartão de Crédito/Débito</option>
+        <option value="PIX">PIX</option>
+        <option value="Transferência">Transferência Bancária</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">PAGO</button>
+  </form>
+  {% else %}
+    <div class="alert alert-info">Nenhum agendamento disponível para pagamento.</div>
+  {% endif %}
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const sel = document.getElementById('agendamento-select');
+  const display = document.getElementById('valor-display');
+  const hidden = document.getElementById('valor-hidden');
+
+  function atualizarValor(){
+    if(!sel) return;
+    const opt = sel.options[sel.selectedIndex];
+    const valor = opt ? opt.getAttribute('data-valor') || '0' : '0';
+    const num = parseFloat(valor) || 0;
+    display.value = 'R$ ' + num.toFixed(2);
+    hidden.value = num.toFixed(2);
+  }
+
+  if(sel){
+    sel.addEventListener('change', atualizarValor);
+    atualizarValor();
+  }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Editar Serviço</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            {{ form.nome.label_tag }}
+            {{ form.nome }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.valor.label_tag }}
+            {{ form.valor }}
+        </div>
+
+        <button type="submit" class="btn btn-success">Atualizar</button>
+        <a href="{% url 'servico' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  <h3>Editar Agendamento</h3>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="mb-3">
+      {{ form.data_agendamento.label_tag }}
+      {{ form.data_agendamento }}
+      {{ form.data_agendamento.errors }}
+    </div>
+    <div class="mb-3">
+      {{ form.hora.label_tag }}
+      {{ form.hora }}
+      {{ form.hora.errors }}
+    </div>
+    <div class="mb-3">
+      {{ form.descricao.label_tag }}
+      {{ form.descricao }}
+      {{ form.descricao.errors }}
+    </div>
+    <div class="mb-3">
+      {{ form.pet.label_tag }}
+      {{ form.pet }}
+      {{ form.pet.errors }}
+    </div>
+    <div class="mb-3">
+      {{ form.servico.label_tag }}
+      {{ form.servico }}
+      {{ form.servico.errors }}
+    </div>
+    
+    <button class="btn btn-primary" type="submit">Salvar</button>
+    <a class="btn btn-secondary" href="{% url 'agendamento' %}">Cancelar</a>
+  </form>
+</div>
+  
+  {% endblock %}

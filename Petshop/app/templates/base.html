@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        :root{
+            --brand-dark: #082f57;
+            --brand-mid: #0b5ed7;
+            --accent: #57b3ff;
+            --muted-bg: #f8f9fa;
+        }
+
+        /* Navbar */
+        .site-navbar{
+            background: linear-gradient(90deg, var(--brand-dark) 0%, var(--brand-mid) 60%);
+            backdrop-filter: saturate(120%);
+        }
+
+        .site-navbar .navbar-brand{
+            color: #fff !important;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+
+        .site-navbar .nav-link{
+            color: rgba(255,255,255,0.95) !important;
+            transition: color 0.18s ease, transform 0.18s ease;
+        }
+
+        .site-navbar .nav-link:hover{
+            color: var(--accent) !important;
+            text-decoration: underline;
+            transform: translateY(-2px);
+        }
+
+        .site-navbar .navbar-toggler{
+            border-color: rgba(255,255,255,0.18);
+        }
+
+        /* Alerts */
+        .alert{
+            min-width: 280px;
+            max-width: 90vw;
+            border-radius: 0.75rem;
+            box-shadow: 0 .5rem 1rem rgba(3, 37, 65, 0.08);
+            margin: .5rem;
+        }
+
+        /* Buttons */
+        .btn-outline-primary{
+            border-color: rgba(255,255,255,0.18);
+            color: #fff;
+        }
+
+        .btn-outline-primary:hover{
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+        }
+
+        .btn-primary{
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn-primary:hover{
+            transform: translateY(-3px);
+            box-shadow: 0 .5rem 1rem rgba(11, 92, 215, 0.12);
+        }
+
+        /* Cards and tables */
+        .card{ transition: transform 0.18s, box-shadow 0.18s; }
+        .card:hover{ transform: translateY(-6px); box-shadow: 0 .9rem 1.6rem rgba(2, 40, 80, 0.08); }
+        .table-row-custom:hover{ background-color: #f1f5ff !important; transition: background-color 0.15s; }
+
+        /* Agendamento card estilo personalizado (retangular sem bordas) */
+        .agendamento-card{
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+            box-shadow: 0 14px 30px rgba(9, 30, 63, 0.06);
+            padding: 0; /* card-body controla o padding */
+            overflow: hidden;
+        }
+
+        /* Jumbotron / Hero consistente com o visual da página */
+        .page-jumbotron{
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+            box-shadow: 0 14px 30px rgba(9, 30, 63, 0.06);
+            color: var(--brand-dark);
+            padding: 2.5rem 2rem; /* mantém espaçamento parecido ao p-5 */
+        }
+
+        .page-jumbotron h1{
+            color: var(--brand-mid);
+            font-weight: 800;
+        }
+
+        /* Formulários de autenticação (login / register) */
+        .auth-wrapper{
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-card{
+            width: 100%;
+            max-width: 400px;
+            background: var(--muted-bg);
+            border-radius: 12px;
+            box-shadow: 0 .9rem 1.6rem rgba(2, 40, 80, 0.06);
+            padding: 1.25rem;
+            border: none;
+        }
+
+        .auth-card h3{
+            color: var(--brand-dark);
+            font-weight: 800;
+        }
+
+        .agendamento-card .card-body{
+            padding: 1.25rem 1.5rem;
+            text-align: center; /* centraliza as informações dentro do card */
+        }
+
+        .agendamento-card .card-title{
+            font-weight: 800;
+            color: var(--brand-mid);
+            letter-spacing: 0.2px;
+            font-size: 1.18rem; /* aumentar um pouco a fonte do título */
+            margin-bottom: 0.35rem;
+        }
+
+        .agendamento-card p{ 
+            color: #495067; 
+            margin-bottom: 0.25rem; 
+            font-size: 0.98rem; /* leve aumento na fonte do texto */
+        }
+
+        .agendamento-meta{
+            display: inline-block;
+            background: rgba(11, 92, 215, 0.08);
+            color: var(--brand-dark);
+            padding: 0.28rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            margin: 0 0.25rem;
+        }
+
+        /* Ações do card (editar / excluir) */
+        .agendamento-actions{ text-align: center; }
+        .agendamento-actions .btn{ min-width: 86px; }
+        @media (max-width: 576px){
+            .agendamento-actions .btn{ display: block; width: 100%; margin-bottom: .5rem; }
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 576px){
+            .site-navbar .nav-link{ font-size: 0.95rem; }
+            .alert{ width: 92vw; }
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+
+    {% if messages %}
+    <div class="d-flex justify-content-center mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} shadow-lg rounded-4 text-center" style="width: 400px;">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <style>
+        /* Hover e animação para todos os botões primários */
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-2px);
+            transition: 0.2s;
+        }
+
+        /* Hover e animação para todos os botões success */
+        .btn-success:hover {
+            background-color: #198754;
+            transform: translateY(-2px);
+            transition: 0.2s;
+        }
+
+        /* Hover e animação para todos os cards */
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
+        }
+
+        .table-row-custom:hover {
+            background-color: #f1f5ff !important;
+            transition: background-color 0.2s ease;
+        }
+
+        /* Tornar a tabela mais moderna */
+        table {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        thead tr {
+            height: 55px;
+            font-size: 1.1rem;
+        }
+
+        tbody tr {
+            height: 50px;
+        }
+    </style>
+</body>
+
+</html>
