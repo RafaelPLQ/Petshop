@@ -86,6 +86,17 @@ class CreateRacaView(View):
         form = RacaFormView()
         return render(request, self.template_name, {'form': form})
 
+    def post(self, request, *args, **kwargs):
+        form = RacaFormView(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Raça cadastrada com sucesso.')
+            return redirect('raca')
+
+        return render(request, self.template_name, {'form': form})
+
+
 
 class AgendamentoView(LoginRequiredMixin, View):
     login_url = 'login'
@@ -296,6 +307,18 @@ class CreateEspecieView(View):
     def get(self, request, *args, **kwargs):
         form = EspecieFormView()
         return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = EspecieFormView(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Espécie cadastrada com sucesso.')
+            return redirect('especie')
+
+        return render(request, self.template_name, {'form': form})
+
+
 
 
 class ServicoView(View):
